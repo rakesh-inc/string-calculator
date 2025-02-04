@@ -1,19 +1,30 @@
+import { DelimiterParserResult, IDelimiterParser } from "./string-calculator.interface";
+
+export class DelimiterParser implements IDelimiterParser {
+  parse(input: string): DelimiterParserResult {
+    if (!input.startsWith("//")) {
+      return {
+        regularExpression: new RegExp(`[,\n]`),
+        updatedNumbers: input,
+      };
+    }
+    const [delimiter, numberString] = input.split("\n");
+    return {
+      regularExpression: new RegExp(`[,\n${delimiter}]`),
+      updatedNumbers: numberString,
+    };
+  }
+}
+
 export class StringCalculator {
+  constructor(private delimiterParser: IDelimiterParser) {}
+
   add(numbers: string): any {
     if (numbers === "") {
       return 0;
     }
-    if (numbers.length === 1) {
-      return parseInt(numbers);
-    }
-    let regExp = new RegExp(`[,\n]`);
-    if (numbers.startsWith("//")) {
-      const [delimiter, numberString] = numbers.split("\n");
-      regExp = new RegExp(`[,\n${delimiter}]`);
-      numbers = numberString;
-    }
-
-    let numberArray = numbers.split(regExp).map(Number);
+    const { regularExpression, updatedNumbers } = this.delimiterParser.parse(numbers);
+    let numberArray = updatedNumbers.split(regularExpression).map(Number);
     return numberArray.reduce((acc, curr) => acc + curr, 0);
   }
 }
