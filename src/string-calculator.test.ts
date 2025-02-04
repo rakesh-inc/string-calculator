@@ -14,7 +14,7 @@ describe("StringCalculator", () => {
     expect(calculator.add("4")).toBe(4);
   });
 
-  it("shoudl return the sum when two numbers are passed as string", () => {
+  it("should return the sum when two numbers are passed as string", () => {
     expect(calculator.add("1,2")).toBe(3);
   });
 

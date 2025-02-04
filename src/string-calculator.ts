@@ -6,7 +6,7 @@ export class StringCalculator {
     if (numbers.length === 1) {
       return parseInt(numbers);
     }
-    let numberArray = numbers.split(",").map(Number);
+    let numberArray = numbers.split(/[,\n]/).map(Number);
     return numberArray.reduce((acc, curr) => acc + curr, 0);
   }
 }
