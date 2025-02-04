@@ -44,11 +44,12 @@ export class StringParser implements IStringParser {
     let updatedDelimiter = new RegExp(`[,\n${parsedDelimiter}]`);
     let updatedNumberString = numberString;
     if (parsedDelimiter.startsWith("[") && parsedDelimiter.endsWith("]")) {
-      updatedNumberString = numberString
-        .split(/[\[\]]/)
-        .filter((delimiter) => delimiter)
-        .join("");
-      updatedDelimiter = new RegExp(parsedDelimiter);
+      updatedDelimiter = new RegExp(
+        `[${parsedDelimiter
+          .split(/[\[\]]/)
+          .filter((delimiter) => delimiter)
+          .join("")}]`
+      );
     }
     return {
       regularExpression: updatedDelimiter,
