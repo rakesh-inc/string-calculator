@@ -49,4 +49,8 @@ describe("StringCalculator", () => {
   it("should return sum when arbitary length separator are passed", () => {
     expect(calculator.add("//[***]\n1***2***3")).toBe(6);
   });
+
+  it("should handle multiple single enclosed separator", () => {
+    expect(calculator.add("//[*][%]\n1*2%3")).toBe(6);
+  });
 });
