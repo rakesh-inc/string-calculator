@@ -25,4 +25,8 @@ describe("StringCalculator", () => {
   it("should return the sum when new line is added as seperator", () => {
     expect(calculator.add("1\n2,3")).toBe(6);
   });
+
+  it("should return the sum when a custom delimiter is added", () => {
+    expect(calculator.add("//;\n1;2")).toBe(3);
+  });
 });
