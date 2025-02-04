@@ -29,4 +29,8 @@ describe("StringCalculator", () => {
   it("should return the sum when a custom delimiter is added", () => {
     expect(calculator.add("//;\n1;2")).toBe(3);
   });
+
+  it("should return throw error when negative number are passed", () => {
+    expect(() => calculator.add("1,-2,-3")).toThrow("error: negatives not allowed: -2 -3");
+  });
 });
