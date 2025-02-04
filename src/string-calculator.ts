@@ -6,7 +6,14 @@ export class StringCalculator {
     if (numbers.length === 1) {
       return parseInt(numbers);
     }
-    let numberArray = numbers.split(/[,\n]/).map(Number);
+    let regExp = new RegExp(`[,\n]`);
+    if (numbers.startsWith("//")) {
+      const [delimiter, numberString] = numbers.split("\n");
+      regExp = new RegExp(`[,\n${delimiter}]`);
+      numbers = numberString;
+    }
+
+    let numberArray = numbers.split(regExp).map(Number);
     return numberArray.reduce((acc, curr) => acc + curr, 0);
   }
 }
