@@ -25,6 +25,11 @@ export class StringCalculator {
     }
     const { regularExpression, updatedNumbers } = this.delimiterParser.parse(numbers);
     let numberArray = updatedNumbers.split(regularExpression).map(Number);
+    if (numberArray.some((number) => number < 0)) {
+      throw new Error(
+        `error: negatives not allowed: ${numberArray.filter((number) => number < 0).join(" ")}`
+      );
+    }
     return numberArray.reduce((acc, curr) => acc + curr, 0);
   }
 }
