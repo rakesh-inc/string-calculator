@@ -10,3 +10,7 @@ export interface IStringParser {
 export interface INumberStringParser {
   parse(input: string, regex: RegExp): number[];
 }
+
+export interface INumberValidator {
+  validate(numbers: number[]): number[];
+}

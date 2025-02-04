@@ -2,17 +2,32 @@ import {
   StringParserResult,
   IStringParser,
   INumberStringParser,
+  INumberValidator,
 } from "./string-calculator.interface";
 
-export class NumberStringParser implements INumberStringParser {
-  parse(input: string, regex: RegExp): number[] {
-    let numberArray = input.split(regex).map(Number);
-    if (numberArray.some((number) => number < 0)) {
+export class NumberValidator implements INumberValidator {
+  validate(numbers: number[]): number[] {
+    this.validateNegatives(numbers);
+    return this.filterLargeNumbers(numbers);
+  }
+
+  private filterLargeNumbers(numbers: number[]): number[] {
+    return numbers.filter((number) => number <= 1000);
+  }
+
+  private validateNegatives(numbers: number[]): void {
+    if (numbers.some((number) => number < 0)) {
       throw new Error(
-        `error: negatives not allowed: ${numberArray.filter((number) => number < 0).join(" ")}`
+        `error: negatives not allowed: ${numbers.filter((number) => number < 0).join(" ")}`
       );
     }
-    return numberArray.filter((number) => number <= 1000);
+  }
+}
+export class NumberStringParser implements INumberStringParser {
+  constructor(private numberValidator: INumberValidator) {}
+  parse(input: string, regex: RegExp): number[] {
+    let numberArray = input.split(regex).map(Number);
+    return this.numberValidator.validate(numberArray);
   }
 }
 
@@ -34,7 +49,6 @@ export class StringParser implements IStringParser {
 
 export class StringCalculator {
   constructor(private stringParser: IStringParser, private numStringParser: INumberStringParser) {}
-
   add(numbers: string): any {
     if (numbers === "") {
       return 0;
