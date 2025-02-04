@@ -30,6 +30,7 @@ export class StringCalculator {
         `error: negatives not allowed: ${numberArray.filter((number) => number < 0).join(" ")}`
       );
     }
+    numberArray = numberArray.filter((number) => number <= 1000);
     return numberArray.reduce((acc, curr) => acc + curr, 0);
   }
 }
