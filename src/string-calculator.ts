@@ -40,9 +40,19 @@ export class StringParser implements IStringParser {
       };
     }
     const [delimiter, numberString] = input.split("\n");
+    const parsedDelimiter = delimiter.slice(2);
+    let updatedDelimiter = new RegExp(`[,\n${parsedDelimiter}]`);
+    let updatedNumberString = numberString;
+    if (parsedDelimiter.startsWith("[") && parsedDelimiter.endsWith("]")) {
+      updatedNumberString = numberString
+        .split(/[\[\]]/)
+        .filter((delimiter) => delimiter)
+        .join("");
+      updatedDelimiter = new RegExp(parsedDelimiter);
+    }
     return {
-      regularExpression: new RegExp(`[,\n${delimiter}]`),
-      updatedNumbers: numberString,
+      regularExpression: updatedDelimiter,
+      updatedNumbers: updatedNumberString,
     };
   }
 }
