@@ -3,13 +3,14 @@ import {
   StringCalculator,
   NumberStringParser,
   NumberValidator,
+  DelimiterParser,
 } from "./string-calculator";
 
 describe("StringCalculator", () => {
   let calculator: StringCalculator;
   beforeEach(() => {
     calculator = new StringCalculator(
-      new StringParser(),
+      new StringParser(new DelimiterParser()),
       new NumberStringParser(new NumberValidator())
     );
   });

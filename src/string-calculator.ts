@@ -3,7 +3,29 @@ import {
   IStringParser,
   INumberStringParser,
   INumberValidator,
+  IDelimiterParser,
 } from "./string-calculator.interface";
+
+export class DelimiterParser implements IDelimiterParser {
+  private isEnclosedDelimiter(input: string): boolean {
+    return input.startsWith("[") && input.endsWith("]");
+  }
+
+  parse(input: string): RegExp {
+    const parsedDelimiter = input.slice(2);
+
+    if (!this.isEnclosedDelimiter(parsedDelimiter)) {
+      return new RegExp(`[,\n${parsedDelimiter}]`);
+    }
+
+    return new RegExp(
+      `[${parsedDelimiter
+        .split(/[\[\]]/)
+        .filter((delimiter) => delimiter)
+        .join("")}]`
+    );
+  }
+}
 
 export class NumberValidator implements INumberValidator {
   validate(numbers: number[]): number[] {
@@ -23,6 +45,7 @@ export class NumberValidator implements INumberValidator {
     }
   }
 }
+
 export class NumberStringParser implements INumberStringParser {
   constructor(private numberValidator: INumberValidator) {}
   parse(input: string, regex: RegExp): number[] {
@@ -32,28 +55,23 @@ export class NumberStringParser implements INumberStringParser {
 }
 
 export class StringParser implements IStringParser {
+  constructor(private delimiterParser: IDelimiterParser) {}
+
+  private getDefaultDelimiter(input: string): StringParserResult {
+    return {
+      regularExpression: new RegExp(`[,\n]`),
+      updatedNumbers: input,
+    };
+  }
+
   parse(input: string): StringParserResult {
     if (!input.startsWith("//")) {
-      return {
-        regularExpression: new RegExp(`[,\n]`),
-        updatedNumbers: input,
-      };
+      return this.getDefaultDelimiter(input);
     }
     const [delimiter, numberString] = input.split("\n");
-    const parsedDelimiter = delimiter.slice(2);
-    let updatedDelimiter = new RegExp(`[,\n${parsedDelimiter}]`);
-    let updatedNumberString = numberString;
-    if (parsedDelimiter.startsWith("[") && parsedDelimiter.endsWith("]")) {
-      updatedDelimiter = new RegExp(
-        `[${parsedDelimiter
-          .split(/[\[\]]/)
-          .filter((delimiter) => delimiter)
-          .join("")}]`
-      );
-    }
     return {
-      regularExpression: updatedDelimiter,
-      updatedNumbers: updatedNumberString,
+      regularExpression: this.delimiterParser.parse(delimiter),
+      updatedNumbers: numberString,
     };
   }
 }

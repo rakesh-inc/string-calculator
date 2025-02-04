@@ -14,3 +14,7 @@ export interface INumberStringParser {
 export interface INumberValidator {
   validate(numbers: number[]): number[];
 }
+
+export interface IDelimiterParser {
+  parse(input: string): RegExp;
+}
