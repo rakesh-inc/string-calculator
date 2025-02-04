@@ -3,6 +3,10 @@ export class StringCalculator {
     if (numbers === "") {
       return 0;
     }
-    return parseInt(numbers);
+    if (numbers.length === 1) {
+      return parseInt(numbers);
+    }
+    let numberArray = numbers.split(",");
+    return parseInt(numberArray[0]) + parseInt(numberArray[1]);
   }
 }
