@@ -1,8 +1,12 @@
-export interface DelimiterParserResult {
+export interface StringParserResult {
   regularExpression: RegExp;
   updatedNumbers: string;
 }
 
-export interface IDelimiterParser {
-  parse(input: string): DelimiterParserResult;
+export interface IStringParser {
+  parse(input: string): StringParserResult;
+}
+
+export interface INumberStringParser {
+  parse(input: string, regex: RegExp): number[];
 }

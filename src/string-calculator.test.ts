@@ -1,9 +1,9 @@
-import { DelimiterParser, StringCalculator } from "./string-calculator";
+import { StringParser, StringCalculator, NumberStringParser } from "./string-calculator";
 
 describe("StringCalculator", () => {
   let calculator: StringCalculator;
   beforeEach(() => {
-    calculator = new StringCalculator(new DelimiterParser());
+    calculator = new StringCalculator(new StringParser(), new NumberStringParser());
   });
 
   it("should return 0 when empty string is passed", () => {
