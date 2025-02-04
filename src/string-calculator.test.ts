@@ -53,4 +53,8 @@ describe("StringCalculator", () => {
   it("should handle multiple single enclosed separator", () => {
     expect(calculator.add("//[*][%]\n1*2%3")).toBe(6);
   });
+
+  it("should handle multiple longer-lenght enclosed delimiters", () => {
+    expect(calculator.add("//[foo][bar]\n1foo2bar3")).toBe(6);
+  });
 });
